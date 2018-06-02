@@ -1,0 +1,86 @@
+<div  fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign.gt-md="space-around center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+    
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
+    <md-card>
+          <md-card-header>
+            <md-card-title>
+              <h3>{{dish.name | uppercase}}</h3>
+            </md-card-title>
+          </md-card-header>
+          <img md-card-image src="{{BaseURL+dish.image}}" alt={{dish.name}}>
+          <md-card-content>
+            <p>{{dish.description}}
+            </p>
+          </md-card-content>
+          <md-card-actions>
+              <button md-button [routerLink]="['/dishdetail',prev]"><span class="fa fa-chevron-left fa-lg"></span></button>
+            <button  md-button (click)="goBack()">BACK</button>
+            <button md-button>LIKE</button>
+            <button md-button>SHARE</button>
+            <span class="flex-spacer"></span>
+            <button md-button [routerLink]="['/dishdetail',next]">
+              <span class="fa fa-chevron-right fa-lg"></span>
+              </button>
+          </md-card-actions>
+        </md-card>
+  </div>
+
+
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
+   
+    <h1 >Comments</h1> 
+    <md-list >
+        <md-list-item  *ngFor="let comment of dish.comments">
+      <p md-line> {{comment.comment}} </p>
+      <p md-line>{{comment.rating}} Stars</p>
+      <p md-line>-- {{comment.author}} {{comment.date | date:"shortDate"}} </p>
+           </md-list-item>   
+           <md-list *ngIf="formComment.valid">
+            <md-list-item>
+              <p md-line> {{formComment.get('comment').value}}  </p>
+               <p md-line> {{formComment.get('rating').value}}  Stars</p>
+               <p md-line><span>-- {{formComment.get('author').value}}
+               </span> </p>
+             </md-list-item>
+           </md-list>
+           
+      
+      </md-list>
+   
+      <form novalidate [formGroup]="formComment" (ngSubmit)="onSubmit()">
+      
+        <md-input-container class="half-width" dividerColor="{{(CommentError.author) ? 'warn' : 'primary'}}">
+          <input mdInput type=text formControlName="author" placeholder="Name" >
+          <md-hint>
+            <span [hidden]="!(CommentError.author)">
+              {{CommentError.author}}</span>
+          </md-hint>
+        </md-input-container>
+     
+        <md-input-container class="half-width" dividerColor="{{(CommentError.rating) ? 'warn' : 'primary'}}">
+          <input mdInput type=text formControlName="rating" placeholder="rating" >
+          <md-hint>
+            <span [hidden]="!(CommentError.rating)">
+              {{CommentError.rating}}</span>
+          </md-hint>
+        </md-input-container>
+            
+         <p>
+          <md-input-container class="full-width"  dividerColor="{{(CommentError.comment) ? 'warn' : 'primary'}}">
+            <textarea mdInput formControlName="comment" placeholder="Your Comment" rows=12></textarea>
+            <md-hint>
+              <span [hidden]="!(CommentError.comment)">
+                {{CommentError.comment}}</span>
+            </md-hint>
+          </md-input-container>
+        </p>
+        <button type="submit" md-button class="background-primary text-floral-white" [disabled]="formComment.invalid">Submit</button>
+   
+      </form>
+  <!-- <button (click)="send();">Set -->
+
+  <!-- </button> -->
+    </div> 
+ 
+      </div>
+  
